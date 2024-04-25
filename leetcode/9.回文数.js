@@ -67,6 +67,15 @@
  */
 var isPalindrome = function (x) {
   const strNum = Object.toString(x);
-  console.log(strNum);
+  let right = strNum.length - 1;
+  let left = 0;
+  let result = true;
+  while (left < right) {
+    if (strNum[left++] !== strNum[right--]) {
+      result = false;
+      break;
+    }
+  }
+  return result;
 };
 // @lc code=end

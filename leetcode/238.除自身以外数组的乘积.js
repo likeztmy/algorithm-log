@@ -84,4 +84,3 @@ var productExceptSelf = function (nums) {
   return results;
 };
 // @lc code=end
-productExceptSelf([1, 2, 3, 4]);
