@@ -70,10 +70,21 @@
  */
 var reverseList = function (head) {
   if (head === null || head.next === null) return head;
-  let res = reverseList(head.next);
-  head.next.next = head;
-  head.next = null;
-  return res;
+  //   let res = reverseList(head.next);
+  //   head.next.next = head;
+  //   head.next = null;
+  //   return res;
+  let prev = head;
+  let now = head.next;
+  prev.next = null;
+
+  while (now) {
+    let temp = now.next;
+    now.next = prev;
+    prev = now;
+    now = temp;
+  }
+  return prev;
 };
 // @lc code=end
 
