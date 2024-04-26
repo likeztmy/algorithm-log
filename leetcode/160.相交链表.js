@@ -119,27 +119,12 @@
  * @return {ListNode}
  */
 var getIntersectionNode = function (headA, headB) {
-  const stackA = [];
-  const stackB = [];
-  let pa = headA;
-  let pb = headB;
-  let result = null;
-  while (pa) {
-    stackA.push(pa);
-    pa = pa.next;
+  let a = headA;
+  let b = headB;
+  while (a !== b) {
+    a = !a ? headB : a.next;
+    b = !b ? headA : b.next;
   }
-
-  while (pb) {
-    stackB.push(pb);
-    pb = pb.next;
-  }
-
-  while (stackA.length && stackB.length) {
-    pa = stackA.pop();
-    pb = stackA.pop();
-    if (pa === pb) result = pa;
-  }
-
-  return result;
+  return a;
 };
 // @lc code=end
