@@ -67,7 +67,6 @@ var mergeKLists = function (lists) {
     .reduceRight((prev, cur) => {
       (cur.next = prev), (prev = cur), prev;
     }, null);
-    
     return result;
 };
 // @lc code=end
