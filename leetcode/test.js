@@ -1,94 +1,71 @@
 /*
- * @lc app=leetcode.cn id=33 lang=javascript
+ * @lc app=leetcode.cn id=560 lang=javascript
  *
- * [33] 搜索旋转排序数组
+ * [560] 和为 K 的子数组
  *
- * https://leetcode.cn/problems/search-in-rotated-sorted-array/description/
+ * https://leetcode.cn/problems/subarray-sum-equals-k/description/
  *
  * algorithms
- * Medium (44.28%)
- * Likes:    2933
+ * Medium (44.09%)
+ * Likes:    2392
  * Dislikes: 0
- * Total Accepted:    886.2K
- * Total Submissions: 2M
- * Testcase Example:  '[4,5,6,7,0,1,2]\n0'
+ * Total Accepted:    482.1K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '[1,1,1]\n2'
  *
- * 整数数组 nums 按升序排列，数组中的值 互不相同 。
- * 
- * 在传递给函数之前，nums 在预先未知的某个下标 k（0 <= k < nums.length）上进行了 旋转，使数组变为 [nums[k],
- * nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]（下标 从 0 开始
- * 计数）。例如， [0,1,2,4,5,6,7] 在下标 3 处经旋转后可能变为 [4,5,6,7,0,1,2] 。
- * 
- * 给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。
- * 
- * 你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。
- * 
- * 
- * 
+ * 给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。
+ *
+ * 子数组是数组中元素的连续非空序列。
+ *
+ *
+ *
  * 示例 1：
- * 
- * 
- * 输入：nums = [4,5,6,7,0,1,2], target = 0
- * 输出：4
- * 
- * 
- * 示例 2：
- * 
- * 
- * 输入：nums = [4,5,6,7,0,1,2], target = 3
- * 输出：-1
- * 
- * 示例 3：
- * 
- * 
- * 输入：nums = [1], target = 0
- * 输出：-1
- * 
- * 
- * 
- * 
+ *
+ *
+ * 输入：nums = [1,1,1], k = 2
+ * 输出：2
+ *
+ *
+ * 示例 2：
+ *
+ *
+ * 输入：nums = [1,2,3], k = 3
+ * 输出：2
+ *
+ *
+ *
+ *
  * 提示：
- * 
- * 
- * 1 <= nums.length <= 5000
- * -10^4 <= nums[i] <= 10^4
- * nums 中的每个值都 独一无二
- * 题目数据保证 nums 在预先未知的某个下标上进行了旋转
- * -10^4 <= target <= 10^4
- * 
- * 
+ *
+ *
+ * 1 <= nums.length <= 2 * 10^4
+ * -1000 <= nums[i] <= 1000
+ * -10^7 <= k <= 10^7
+ *
+ *
  */
 
 // @lc code=start
 /**
  * @param {number[]} nums
- * @param {number} target
+ * @param {number} k
  * @return {number}
  */
-var search = function(nums, target) {
-    let low = 0;
-    let high = nums.length - 1;
-
-    while(low <= high) {
-        let mid = Math.floor((low + high) / 2);
-
-        if(nums[mid] === target) return mid;
-
-        
-        if(nums[mid] < nums[high]) {
-            if(target > nums[mid] && target <= nums[high]) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        } else {
-            if(target >= nums[low] && target < nums[mid]) {
-                high = mid - 1;
-            } else {
-                low = mid + 1;
-            }
-        }
-    }
-    return -1;
+var subarraySum = function (nums, k) {
+  const s = new Array(nums.length + 1).fill(0);
+  for (let i = 0; i < nums.length; i++) {
+    s[i + 1] = s[i] + nums[i];
+  }
+  const cnt = new Map();
+  let ans = 0;
+  for (let i = 0; i < s.length; i++) {
+    ans += cnt.get(s[i] - k) ?? 0;
+    cnt.set(s[i], (cnt.get(s[i]) ?? 0) + 1);
+  }
+  return ans;
 };
 // @lc code=end
+
+// 0 1 2 3
+
+subarraySum([1, 1, 1], 2);
