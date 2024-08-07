@@ -1,36 +1,44 @@
 /*
- * @lc app=leetcode.cn id=560 lang=javascript
+ * @lc app=leetcode.cn id=322 lang=javascript
  *
- * [560] 和为 K 的子数组
+ * [322] 零钱兑换
  *
- * https://leetcode.cn/problems/subarray-sum-equals-k/description/
+ * https://leetcode.cn/problems/coin-change/description/
  *
  * algorithms
- * Medium (44.09%)
- * Likes:    2392
+ * Medium (48.32%)
+ * Likes:    2843
  * Dislikes: 0
- * Total Accepted:    482.1K
- * Total Submissions: 1.1M
- * Testcase Example:  '[1,1,1]\n2'
+ * Total Accepted:    861.4K
+ * Total Submissions: 1.8M
+ * Testcase Example:  '[1,2,5]\n11'
  *
- * 给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。
+ * 给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
  *
- * 子数组是数组中元素的连续非空序列。
+ * 计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
  *
- *
- *
- * 示例 1：
+ * 你可以认为每种硬币的数量是无限的。
  *
  *
- * 输入：nums = [1,1,1], k = 2
- * 输出：2
  *
+ * 示例 1：
+ *
+ *
+ * 输入：coins = [1, 2, 5], amount = 11
+ * 输出：3
+ * 解释：11 = 5 + 5 + 1
  *
  * 示例 2：
  *
  *
- * 输入：nums = [1,2,3], k = 3
- * 输出：2
+ * 输入：coins = [2], amount = 3
+ * 输出：-1
+ *
+ * 示例 3：
+ *
+ *
+ * 输入：coins = [1], amount = 0
+ * 输出：0
  *
  *
  *
@@ -38,34 +46,30 @@
  * 提示：
  *
  *
- * 1 <= nums.length <= 2 * 10^4
- * -1000 <= nums[i] <= 1000
- * -10^7 <= k <= 10^7
+ * 1 <= coins.length <= 12
+ * 1 <= coins[i] <= 2^31 - 1
+ * 0 <= amount <= 10^4
  *
  *
  */
 
 // @lc code=start
 /**
- * @param {number[]} nums
- * @param {number} k
+ * @param {number[]} coins
+ * @param {number} amount
  * @return {number}
  */
-var subarraySum = function (nums, k) {
-  const s = new Array(nums.length + 1).fill(0);
-  for (let i = 0; i < nums.length; i++) {
-    s[i + 1] = s[i] + nums[i];
+var coinChange = function (coins, amount) {
+  if (amount === 0) return 0;
+  const dp = new Array(amount + 1).fill(amount + 1);
+  dp[0] = 0;
+  for (let i = 1; i <= amount; i++) {
+    for (let j = 0; j < coins.length; j++) {
+      if (i >= coins[j]) {
+        dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+      }
+    }
   }
-  const cnt = new Map();
-  let ans = 0;
-  for (let i = 0; i < s.length; i++) {
-    ans += cnt.get(s[i] - k) ?? 0;
-    cnt.set(s[i], (cnt.get(s[i]) ?? 0) + 1);
-  }
-  return ans;
+  return dp[amount] === amount + 1 ? -1 : dp[amount];
 };
 // @lc code=end
-
-// 0 1 2 3
-
-subarraySum([1, 1, 1], 2);
